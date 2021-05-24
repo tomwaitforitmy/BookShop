@@ -1,5 +1,5 @@
-import { PRODUCTS } from "../../data/dummy-data";
-import { SET_FILTERS, TOGGLE_FAVORITE } from "../actions/productAction";
+import { PRODUCTS } from "../../data/DummyData";
+import { SET_FILTERS, TOGGLE_FAVORITE } from "../actions/productsAction";
 
 const initialState = {
   products: PRODUCTS,

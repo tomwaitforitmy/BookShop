@@ -5,11 +5,11 @@ import ShopNavigator from "./navigation/ShopNavigator";
 import { enableScreens } from "react-native-screens";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import productsReducer from "./store/reducers/mealsReducer";
+import productsReducer from "./store/reducers/producsReducer";
 
 enableScreens();
 
-const rootReducer = combineReducers({ meals: productsReducer });
+const rootReducer = combineReducers({ products: productsReducer });
 
 const store = createStore(rootReducer);
 
