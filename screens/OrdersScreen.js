@@ -19,20 +19,20 @@ OrdersScreen.navigationOptions = (props) => {
     headerStyle: {
       backgroundColor: Colors.second,
     },
-    // headerLeft: () => {
-    //   return (
-    //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-    //       <Item
-    //         title="Drawer"
-    //         iconName="ios-menu"
-    //         onPress={() => {
-    //           console.log("drawer");
-    //           props.navigation.toggleDrawer();
-    //         }}
-    //       />
-    //     </HeaderButtons>
-    //   );
-    // },
+    headerLeft: () => {
+      return (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+          <Item
+            title="Drawer"
+            iconName="ios-menu"
+            onPress={() => {
+              console.log("drawer");
+              props.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      );
+    },
   };
 };
 
