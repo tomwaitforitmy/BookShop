@@ -1,21 +1,20 @@
 import React from "react";
 import Colors from "../constants/Colors";
+import { useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
-import { StyleSheet, View } from "react-native";
-import DefaultText from "../components/DefaultText";
+import { StyleSheet } from "react-native";
+import ProductList from "../components/ProductList";
 
 const ShopScreen = (props) => {
-  return (
-    <View style={styles.dummyContent}>
-      <DefaultText>ShopScreen</DefaultText>
-    </View>
-  );
+  const products = useSelector((state) => state.products.products);
+
+  return <ProductList productList={products} navigation={props.navigation} />;
 };
 
 ShopScreen.navigationOptions = (props) => {
   return {
-    headerTitle: "Your cart",
+    headerTitle: "Shop",
     headerStyle: {
       backgroundColor: Colors.second,
     },
