@@ -26,7 +26,9 @@ const ProductItem = (props) => {
             </ImageBackground>
           </View>
           <View style={{ ...styles.productRow, ...styles.productDetail }}>
-            <DefaultText style={styles.price}>{props.price}€</DefaultText>
+            <DefaultText style={styles.price}>
+              {props.price.toFixed(2)}€
+            </DefaultText>
             <DefaultText style={styles.description} numberOfLines={1}>
               {props.description}
             </DefaultText>
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     height: "85%",
   },
   productDetail: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 30,
     justifyContent: "space-between",
     alignItems: "center",
     height: "15%",
