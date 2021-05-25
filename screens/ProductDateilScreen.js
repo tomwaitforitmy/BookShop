@@ -14,24 +14,12 @@ const ProductDetailScreen = (props) => {
 };
 
 ProductDetailScreen.navigationOptions = (props) => {
+  const title = props.navigation.getParam("productTitle");
+
   return {
-    headerTitle: "Your cart",
+    headerTitle: title,
     headerStyle: {
       backgroundColor: Colors.second,
-    },
-    headerLeft: () => {
-      return (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Drawer"
-            iconName="ios-menu"
-            onPress={() => {
-              console.log("drawer");
-              props.navigation.toggleDrawer();
-            }}
-          />
-        </HeaderButtons>
-      );
     },
   };
 };

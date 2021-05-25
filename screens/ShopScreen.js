@@ -25,7 +25,6 @@ ShopScreen.navigationOptions = (props) => {
             title="Drawer"
             iconName="ios-menu"
             onPress={() => {
-              console.log("drawer");
               props.navigation.toggleDrawer();
             }}
           />

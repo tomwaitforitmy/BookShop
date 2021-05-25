@@ -9,7 +9,7 @@ const ProductList = (props) => {
         title={itemData.item.title}
         onSelectProduct={() => {
           props.navigation.navigate({
-            routeName: "ProductDetail",
+            routeName: "ProductDetails",
             params: {
               productId: itemData.item.id,
               productTitle: itemData.item.title,

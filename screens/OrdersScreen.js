@@ -15,7 +15,7 @@ const OrdersScreen = (props) => {
 
 OrdersScreen.navigationOptions = (props) => {
   return {
-    headerTitle: "Your cart",
+    headerTitle: "Orders",
     headerStyle: {
       backgroundColor: Colors.second,
     },
