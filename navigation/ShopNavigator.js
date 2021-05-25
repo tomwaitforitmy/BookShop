@@ -5,7 +5,7 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import Colors from "../constants/Colors";
 import ShopScreen from "../screens/ShopScreen";
 import CartScreen from "../screens/CartScreen";
-import ProductDetailScreen from "../screens/ProductDateilScreen";
+import ProductDetailScreen from "../screens/ProductDetailScreen";
 import OrdersScreen from "../screens/OrdersScreen";
 import YourProductsScreen from "../screens/YourProductsScreen";
 import EditProductScreen from "../screens/EditProductScreen";
