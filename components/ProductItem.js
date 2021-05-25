@@ -26,8 +26,10 @@ const ProductItem = (props) => {
             </ImageBackground>
           </View>
           <View style={{ ...styles.productRow, ...styles.productDetail }}>
-            <DefaultText>{props.price}m</DefaultText>
-            <DefaultText>{props.description}</DefaultText>
+            <DefaultText style={styles.price}>{props.price}€</DefaultText>
+            <DefaultText style={styles.description} numberOfLines={1}>
+              {props.description}
+            </DefaultText>
           </View>
         </View>
       </TouchableOpacity>
@@ -36,6 +38,13 @@ const ProductItem = (props) => {
 };
 
 const styles = StyleSheet.create({
+  price: {
+    marginRight: 10,
+    fontFamily: "open-sans-bold",
+  },
+  description: {
+    marginRight: 40,
+  },
   productItem: {
     flex: 1,
     height: 200,
