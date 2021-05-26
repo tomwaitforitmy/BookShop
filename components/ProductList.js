@@ -16,6 +16,7 @@ const ProductList = (props) => {
             },
           });
         }}
+        onAddToCart={() => {}}
         price={itemData.item.price}
         description={itemData.item.description}
         image={itemData.item.imageUrl}

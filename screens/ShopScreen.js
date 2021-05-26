@@ -9,7 +9,14 @@ import ProductList from "../components/ProductList";
 const ShopScreen = (props) => {
   const products = useSelector((state) => state.products.products);
 
-  return <ProductList productList={products} navigation={props.navigation} />;
+  return (
+    <ProductList
+      productList={products}
+      navigation={props.navigation}
+      onViewDetail={() => {}}
+      onAddToCart={() => {}}
+    />
+  );
 };
 
 ShopScreen.navigationOptions = (props) => {
