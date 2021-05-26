@@ -1,6 +1,6 @@
 import React from "react";
 import Colors from "../constants/Colors";
-import { StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View, Button } from "react-native";
 import { useSelector } from "react-redux";
 import DefaultText from "../components/DefaultText";
 
@@ -12,9 +12,18 @@ const ProductDetailScreen = (props) => {
   );
 
   return (
-    <View style={styles.dummyContent}>
-      <DefaultText>{selectedProduct.title}</DefaultText>
-    </View>
+    <ScrollView>
+      <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
+      <View style={styles.actions}>
+        <Button color={Colors.primary} title="Add to card" onPress={() => {}} />
+      </View>
+      <DefaultText style={styles.price}>
+        {selectedProduct.price.toFixed(2)}€
+      </DefaultText>
+      <DefaultText style={styles.description}>
+        {selectedProduct.description}
+      </DefaultText>
+    </ScrollView>
   );
 };
 
@@ -30,10 +39,24 @@ ProductDetailScreen.navigationOptions = (props) => {
 };
 
 const styles = StyleSheet.create({
-  dummyContent: {
-    flex: 1,
-    justifyContent: "center",
+  actions: {
+    marginVertical: 10,
     alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: 300,
+  },
+  price: {
+    fontSize: 20,
+    color: "#888",
+    textAlign: "center",
+    marginVertical: 20,
+  },
+  description: {
+    fontSize: 14,
+    textAlign: "center",
+    marginHorizontal: 20,
   },
 });
 
