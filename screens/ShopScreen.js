@@ -7,7 +7,7 @@ import { StyleSheet } from "react-native";
 import ProductList from "../components/ProductList";
 
 const ShopScreen = (props) => {
-  const products = useSelector((state) => state.products.products);
+  const products = useSelector((state) => state.products.availableProducts);
 
   return (
     <ProductList

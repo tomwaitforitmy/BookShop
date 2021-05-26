@@ -1,12 +1,19 @@
 import React from "react";
 import Colors from "../constants/Colors";
 import { StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import DefaultText from "../components/DefaultText";
 
 const ProductDetailScreen = (props) => {
+  const productId = props.navigation.getParam("productId");
+
+  const selectedProduct = useSelector((state) =>
+    state.products.availableProducts.find((p) => p.id === productId)
+  );
+
   return (
     <View style={styles.dummyContent}>
-      <DefaultText>ProductDetailScreen</DefaultText>
+      <DefaultText>{selectedProduct.title}</DefaultText>
     </View>
   );
 };

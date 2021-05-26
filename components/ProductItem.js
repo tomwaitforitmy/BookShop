@@ -1,80 +1,83 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Button } from "react-native";
 import Colors from "../constants/Colors";
 import DefaultText from "./DefaultText";
+import { GetTouchableComponentForAnyOS } from "../common_functions/GetTouchableComponentForAnyOS";
 
 const ProductItem = (props) => {
+  let MyTouchable = GetTouchableComponentForAnyOS();
+
   return (
-    <View style={{ ...styles.productItem, ...props.style }}>
-      <TouchableOpacity onPress={props.onSelectProduct}>
-        <View style={{ ...styles.productRow, ...styles.productHeader }}>
-          <ImageBackground
-            source={{ uri: props.image }}
-            style={styles.backgroundImage}
-          >
-            <View style={styles.titleContainer}>
-              <Text style={styles.title} numberOfLines={1}>
-                {props.title}
-              </Text>
-            </View>
-          </ImageBackground>
+    <View style={{ ...styles.productItemContainer, ...props.style }}>
+      <MyTouchable onPress={props.onSelectProduct}>
+        <View>
+          <View style={styles.productImageAndTitleContainer}>
+            <ImageBackground
+              source={{ uri: props.image }}
+              style={styles.backgroundImage}
+            >
+              <View style={styles.titleContainer}>
+                <Text style={styles.title} numberOfLines={1}>
+                  {props.title}
+                </Text>
+              </View>
+            </ImageBackground>
+          </View>
+          <View style={styles.productDetailContainer}>
+            <DefaultText style={styles.price}>
+              {props.price.toFixed(2)}€
+            </DefaultText>
+            <DefaultText style={styles.description} numberOfLines={1}>
+              {props.description}
+            </DefaultText>
+          </View>
+          <View style={styles.actionButtonsContainer}>
+            <Button
+              title="View details"
+              color={Colors.second}
+              onPress={props.onSelectProduct}
+            />
+            <Button
+              title="Add to cart"
+              color={Colors.second}
+              onPress={props.onAddToCart}
+            />
+          </View>
         </View>
-        <View style={{ ...styles.productRow, ...styles.productDetail }}>
-          <DefaultText style={styles.price}>
-            {props.price.toFixed(2)}€
-          </DefaultText>
-          <DefaultText style={styles.description} numberOfLines={1}>
-            {props.description}
-          </DefaultText>
-        </View>
-      </TouchableOpacity>
-      <View style={{ ...styles.productRow, ...styles.addToCartButton }}>
-        <Button
-          title="Add to cart"
-          color={Colors.second}
-          onPress={props.onAddToCart}
-        />
-      </View>
+      </MyTouchable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  productHeader: {
-    height: "60%",
-  },
-  productDetail: {
-    paddingHorizontal: 30,
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "15%",
-  },
-  addToCartButton: {
-    height: "25%",
-    justifyContent: "flex-end",
-  },
-  price: {
-    marginRight: 10,
-    fontFamily: "open-sans-bold",
-  },
-  description: {
-    marginRight: 40,
-  },
-  productItem: {
+  productItemContainer: {
     flex: 1,
     height: 300,
     backgroundColor: "#ccc",
+    margin: 10,
     borderRadius: 15,
     overflow: "hidden",
-    margin: 10,
   },
+  productImageAndTitleContainer: {
+    height: "60%",
+  },
+  productDetailContainer: {
+    paddingHorizontal: 30,
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: "20%",
+  },
+  actionButtonsContainer: {
+    height: "20%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 30,
+    flexDirection: "row",
+  },
+  price: {
+    fontFamily: "open-sans-bold",
+  },
+  description: {},
   productRow: {
     flexDirection: "row",
   },
