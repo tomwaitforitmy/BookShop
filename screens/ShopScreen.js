@@ -25,14 +25,27 @@ ShopScreen.navigationOptions = (props) => {
     headerStyle: {
       backgroundColor: Colors.second,
     },
-    headerLeft: () => {
+    // headerLeft: () => {
+    //   return (
+    //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //       <Item
+    //         title="Drawer"
+    //         iconName="ios-menu"
+    //         onPress={() => {
+    //           props.navigation.toggleDrawer();
+    //         }}
+    //       />
+    //     </HeaderButtons>
+    //   );
+    // },
+    headerRight: () => {
       return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
-            title="Drawer"
-            iconName="ios-menu"
+            title="Cart"
+            iconName="ios-cart"
             onPress={() => {
-              props.navigation.toggleDrawer();
+              props.navigation.navigate("Cart");
             }}
           />
         </HeaderButtons>
