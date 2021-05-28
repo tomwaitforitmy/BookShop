@@ -1,8 +1,9 @@
 import React from "react";
 import Colors from "../constants/Colors";
 import { Image, ScrollView, StyleSheet, View, Button } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DefaultText from "../components/DefaultText";
+import * as cartActions from "../store/actions/cartAction";
 
 const ProductDetailScreen = (props) => {
   const productId = props.navigation.getParam("productId");
@@ -11,11 +12,19 @@ const ProductDetailScreen = (props) => {
     state.products.availableProducts.find((p) => p.id === productId)
   );
 
+  const dispatch = useDispatch();
+
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
       <View style={styles.actions}>
-        <Button color={Colors.primary} title="Add to card" onPress={() => {}} />
+        <Button
+          color={Colors.primary}
+          title="Add to card"
+          onPress={() => {
+            dispatch(cartActions.addToCart(selectedProduct));
+          }}
+        />
       </View>
       <DefaultText style={styles.price}>
         {selectedProduct.price.toFixed(2)}€

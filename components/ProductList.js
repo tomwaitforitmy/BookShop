@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { FlatList, View, StyleSheet } from "react-native";
 import ProductItem from "./ProductItem";
+import * as cartActions from "../store/actions/cartAction";
 
 const ProductList = (props) => {
+  const dispatch = useDispatch();
+
   const renderProductItem = (itemData) => {
     return (
       <ProductItem
@@ -16,7 +20,9 @@ const ProductList = (props) => {
             },
           });
         }}
-        onAddToCart={() => {}}
+        onAddToCart={() => {
+          dispatch(cartActions.addToCart(itemData.item));
+        }}
         price={itemData.item.price}
         description={itemData.item.description}
         image={itemData.item.imageUrl}
