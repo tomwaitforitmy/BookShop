@@ -7,6 +7,7 @@ import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../components/CartItem";
 import * as cartActions from "../store/actions/cartAction";
+import * as ordersAction from "../store/actions/ordersAction";
 
 const CartScreen = (props) => {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -36,7 +37,9 @@ const CartScreen = (props) => {
         </DefaultText>
         <Button
           title="Order now"
-          onPress={() => {}}
+          onPress={() => {
+            dispatch(ordersAction.addOrder(cartItems, cartTotalAmount));
+          }}
           disabled={cartItems.length === 0}
         />
       </View>
