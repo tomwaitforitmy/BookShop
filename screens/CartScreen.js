@@ -4,8 +4,9 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import { StyleSheet, View, Button, FlatList } from "react-native";
 import DefaultText from "../components/DefaultText";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../components/CartItem";
+import * as cartActions from "../store/actions/cartAction";
 
 const CartScreen = (props) => {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -20,8 +21,12 @@ const CartScreen = (props) => {
         sum: state.cart.items[key].sum,
       });
     }
-    return itemsInArrayFrom;
+    return itemsInArrayFrom.sort((a, b) =>
+      a.productId > b.productId ? 1 : -1
+    );
   });
+
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.screen}>
@@ -43,7 +48,9 @@ const CartScreen = (props) => {
             quantity={itemData.item.quantity}
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
-            onRemove={() => {}}
+            onRemove={() => {
+              dispatch(cartActions.removeFromCart(itemData.item.productId));
+            }}
           ></CartItem>
         )}
       ></FlatList>

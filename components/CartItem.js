@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-bold",
     color: "#888",
     fontSize: 16,
-    maxWidth: 200,
+    // maxWidth: "80%",
   },
   quantity: {
     fontFamily: "open-sans",
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   itemData: {
     flexDirection: "row",
     alignItems: "center",
+    maxWidth: "70%",
   },
   cartItemContainer: {
     padding: 10,
