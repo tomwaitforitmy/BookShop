@@ -2,14 +2,22 @@ import React from "react";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 import DefaultText from "../components/DefaultText";
 
 const OrdersScreen = (props) => {
+  const orders = useSelector((state) => state.orders.orders);
   return (
-    <View style={styles.dummyContent}>
-      <DefaultText>OrdersScreen</DefaultText>
-    </View>
+    // <View style={styles.container}>
+    <FlatList
+      data={orders}
+      keyExtractor={(item) => item.id}
+      renderItem={(itemData) => (
+        <DefaultText>{itemData.item.amount}</DefaultText>
+      )}
+    ></FlatList>
+    // </View>
   );
 };
 
@@ -23,7 +31,7 @@ OrdersScreen.navigationOptions = (props) => {
       return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
-            title="Drawer"
+            title="Menu"
             iconName="ios-menu"
             onPress={() => {
               console.log("drawer");
@@ -37,7 +45,7 @@ OrdersScreen.navigationOptions = (props) => {
 };
 
 const styles = StyleSheet.create({
-  dummyContent: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
