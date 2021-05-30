@@ -9,6 +9,7 @@ import ProductDetailScreen from "../screens/ProductDetailScreen";
 import OrdersScreen from "../screens/OrdersScreen";
 import YourProductsScreen from "../screens/YourProductsScreen";
 import EditProductScreen from "../screens/EditProductScreen";
+import { Ionicons } from "@expo/vector-icons";
 
 const defaultStackNavigationOptions = {
   headerStyle: {
@@ -30,6 +31,11 @@ const YourProductsNavigator = createStackNavigator(
     EditProduct: EditProductScreen,
   },
   {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name={"ios-menu"} size={23} color={drawerConfig.tintColor} />
+      ),
+    },
     defaultNavigationOptions: defaultStackNavigationOptions,
   }
 );
@@ -39,6 +45,11 @@ const OrdersNavigator = createStackNavigator(
     Orders: OrdersScreen,
   },
   {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name={"ios-list"} size={23} color={drawerConfig.tintColor} />
+      ),
+    },
     defaultNavigationOptions: defaultStackNavigationOptions,
   }
 );
@@ -50,6 +61,11 @@ const ShopNavigator = createStackNavigator(
     ProductDetails: ProductDetailScreen,
   },
   {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name={"ios-cart"} size={23} color={drawerConfig.tintColor} />
+      ),
+    },
     defaultNavigationOptions: defaultStackNavigationOptions,
   }
 );
