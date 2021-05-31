@@ -3,7 +3,7 @@ import { SET_FILTERS, TOGGLE_FAVORITE } from "../actions/productsAction";
 
 const initialState = {
   availableProducts: PRODUCTS,
-  productsInCart: [],
+  userProducts: PRODUCTS.filter((prod) => prod.ownerId === "u1"),
 };
 
 const productsReducer = (state = initialState, action) => {

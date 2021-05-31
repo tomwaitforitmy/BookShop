@@ -11,7 +11,7 @@ export const PRODUCTS = [
   ),
   new Product(
     "p2",
-    "u1",
+    "u2",
     "A song of ice fire - book 2 - A clash of kings",
     "https://images2.medimops.eu/product/ee2671/M00553579908-large.jpg",
     29.3,
@@ -19,7 +19,7 @@ export const PRODUCTS = [
   ),
   new Product(
     "p3",
-    "u1",
+    "u2",
     "A song of ice fire - book 3 - A storm of swords",
     "https://productimages.worldofbooks.com/0553381709.jpg",
     39.45,
