@@ -2,7 +2,7 @@ import React from "react";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, Button, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 import ProductItem from "../components/ProductItem";
 
@@ -17,9 +17,11 @@ const UserProductsScreen = (props) => {
           image={itemData.item.imageUrl}
           title={itemData.item.title}
           price={itemData.item.price}
-          onViewDetail={() => {}}
-          oneAddToCart={() => {}}
-        ></ProductItem>
+          onSelectProduct={() => {}}
+        >
+          <Button title="Edit" color={Colors.second} onPress={() => {}} />
+          <Button title="Delete" color={Colors.second} onPress={() => {}} />
+        </ProductItem>
       )}
     />
   );

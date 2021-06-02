@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, ImageBackground, Button } from "react-native";
-import Colors from "../constants/Colors";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import DefaultText from "./DefaultText";
 import { GetTouchableComponentForAnyOS } from "../common_functions/GetTouchableComponentForAnyOS";
 
@@ -31,18 +30,7 @@ const ProductItem = (props) => {
               {props.description}
             </DefaultText>
           </View>
-          <View style={styles.actionButtonsContainer}>
-            <Button
-              title="View details"
-              color={Colors.second}
-              onPress={props.onSelectProduct}
-            />
-            <Button
-              title="Add to cart"
-              color={Colors.second}
-              onPress={props.onAddToCart}
-            />
-          </View>
+          <View style={styles.actionButtonsContainer}>{props.children}</View>
         </View>
       </MyTouchable>
     </View>
