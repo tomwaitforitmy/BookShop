@@ -32,6 +32,7 @@ const EditProductScreen = (props) => {
     } else {
       dispatch(productActions.createProduct(product));
     }
+    props.navigation.goBack();
   }, [dispatch, product]);
 
   useEffect(() => {
@@ -94,20 +95,6 @@ EditProductScreen.navigationOptions = (props) => {
     headerTitle: productId ? "Edit product" : "Add product",
     headerStyle: {
       backgroundColor: Colors.second,
-    },
-    headerLeft: () => {
-      return (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-          <Item
-            title="Drawer"
-            iconName="ios-menu"
-            onPress={() => {
-              console.log("drawer");
-              props.navigation.toggleDrawer();
-            }}
-          />
-        </HeaderButtons>
-      );
     },
     headerRight: () => {
       return (

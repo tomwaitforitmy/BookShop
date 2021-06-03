@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../components/CartItem";
 import * as cartActions from "../store/actions/cartAction";
 import * as ordersAction from "../store/actions/ordersAction";
+import Card from "../components/Card";
 
 const CartScreen = (props) => {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -29,7 +30,7 @@ const CartScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card style={styles.summary}>
         <DefaultText style={styles.summaryText}>
           Total amount: {Math.abs(cartTotalAmount).toFixed(2)}€
         </DefaultText>
@@ -40,7 +41,7 @@ const CartScreen = (props) => {
           }}
           disabled={cartItems.length === 0}
         />
-      </View>
+      </Card>
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item.productId}
@@ -79,13 +80,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "white",
   },
   summaryText: {
     fontFamily: "open-sans-bold",

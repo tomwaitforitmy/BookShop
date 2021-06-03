@@ -43,8 +43,6 @@ const productsReducer = (state = initialState, action) => {
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[userProductIndex] = action.product;
 
-      console.log(updatedAvailableProducts);
-
       return {
         ...state,
         availableProducts: updatedAvailableProducts,

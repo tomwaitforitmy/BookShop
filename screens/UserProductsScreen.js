@@ -2,7 +2,7 @@ import React from "react";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
-import { StyleSheet, Button, FlatList } from "react-native";
+import { StyleSheet, Button, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../components/ProductItem";
 import * as productActions from "../store/actions/productsAction";
@@ -13,6 +13,19 @@ const UserProductsScreen = (props) => {
 
   const editProductHandler = (id) => {
     props.navigation.navigate("EditProduct", { productId: id });
+  };
+
+  const deleteHandler = (id) => {
+    Alert.alert("Are you sure?", "This will delete something forever!", [
+      { text: "No", style: "default" },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          dispatch(productActions.deleteProduct(id));
+        },
+      },
+    ]);
   };
 
   return (
@@ -38,9 +51,7 @@ const UserProductsScreen = (props) => {
           <Button
             title="Delete"
             color={Colors.second}
-            onPress={() => {
-              dispatch(productActions.deleteProduct(itemData.item.id));
-            }}
+            onPress={() => deleteHandler(itemData.item.id)}
           />
         </ProductItem>
       )}
