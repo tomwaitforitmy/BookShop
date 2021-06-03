@@ -1,7 +1,5 @@
 import React from "react";
 import Colors from "../constants/Colors";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import HeaderButton from "../components/HeaderButton";
 import { StyleSheet, View, Button, FlatList } from "react-native";
 import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +31,7 @@ const CartScreen = (props) => {
     <View style={styles.screen}>
       <View style={styles.summary}>
         <DefaultText style={styles.summaryText}>
-          Total amount: {cartTotalAmount.toFixed(2)}€
+          Total amount: {Math.abs(cartTotalAmount).toFixed(2)}€
         </DefaultText>
         <Button
           title="Order now"
