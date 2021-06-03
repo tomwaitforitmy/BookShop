@@ -47,7 +47,7 @@ const EditProductScreen = (props) => {
       state.products.availableProducts.find((p) => p.id === productId)
     );
   } else {
-    inputProduct = new Product(new Date().toString(), "u1", "", "", 0, "");
+    inputProduct = new Product("", "u1", "", "", 0, "");
   }
 
   const dispatch = useDispatch();
