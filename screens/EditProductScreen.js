@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import { StyleSheet, View, TextInput, ScrollView } from "react-native";
 import DefaultText from "../components/DefaultText";
 import Product from "../models/Product";
+import * as productActions from "../store/actions/productsAction";
 
 const EditProductScreen = (props) => {
   const productId = props.navigation.getParam("productId");
@@ -18,18 +19,24 @@ const EditProductScreen = (props) => {
   }
 
   const [product, setProduct] = useState(
-    foundProd ? foundProd : new Product("pId", "uId", "", "", "", "")
+    foundProd
+      ? foundProd
+      : new Product(new Date().toString(), "u1", "", "", 0, "")
   );
 
+  const dispatch = useDispatch();
+
   const submitHandler = useCallback(() => {
-    console.log("Saving");
-  }, []);
+    if (productId) {
+      dispatch(productActions.editProduct(product));
+    } else {
+      dispatch(productActions.createProduct(product));
+    }
+  }, [dispatch, product]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
-
-  // console.log(product);
 
   return (
     <ScrollView>
@@ -39,7 +46,9 @@ const EditProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={product.title}
-            onChangeText={(text) => setProduct({ ...product, title: text })}
+            onChangeText={(text) => {
+              setProduct({ ...product, title: text });
+            }}
           ></TextInput>
         </View>
         <View style={styles.formControl}>
@@ -56,7 +65,7 @@ const EditProductScreen = (props) => {
           <TextInput
             editable={!foundProd}
             style={styles.input}
-            onChangeText={(text) => setProduct({ ...product, price: text })}
+            onChangeText={(text) => setProduct({ ...product, price: +text })}
           >
             {product.price}
           </TextInput>
