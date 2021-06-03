@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { FlatList, View, StyleSheet, Button } from "react-native";
 import Colors from "../constants/Colors";
 import ProductItem from "./ProductItem";
 import * as cartActions from "../store/actions/cartAction";
+import * as productActions from "../store/actions/productsAction";
 
 const ProductList = (props) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(productActions.fetchProducts());
+  }, [dispatch]);
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate({
