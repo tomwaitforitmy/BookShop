@@ -13,7 +13,9 @@ export const fetchProducts = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Something went wrong! \n #" + response.status);
+        throw new Error(
+          "Something went wrong fetching! \n #" + response.status
+        );
       }
 
       const responseData = await response.json();
@@ -41,15 +43,28 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = (id) => {
-  return { type: DELETE_PRODUCT, productId: id };
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong deleting! \n #" + response.status);
+    }
+
+    dispatch({ type: DELETE_PRODUCT, productId: id });
+  };
+};
+
+const replacer = (key, value) => {
+  if (key === "id") return undefined;
+  else return value;
 };
 
 export const createProduct = (product) => {
-  const replacer = (key, value) => {
-    if (key === "id") return undefined;
-    else return value;
-  };
-
   return async (dispatch) => {
     const response = await fetch(
       "https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json",
@@ -71,5 +86,22 @@ export const createProduct = (product) => {
 };
 
 export const editProduct = (product) => {
-  return { type: EDIT_PRODUCT, product: product };
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${product.id}.json`,
+      {
+        method: "PATCH",
+        header: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(product, replacer),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong editing! \n #" + response.status);
+    }
+
+    dispatch({ type: EDIT_PRODUCT, product: product });
+  };
 };
