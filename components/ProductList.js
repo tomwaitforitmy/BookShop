@@ -12,6 +12,7 @@ import ProductItem from "./ProductItem";
 import * as cartActions from "../store/actions/cartAction";
 import * as productActions from "../store/actions/productsAction";
 import DefaultText from "./DefaultText";
+import LoadingIndicator from "./LoadingIndicator";
 
 const ProductList = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -101,14 +102,7 @@ const ProductList = (props) => {
   }
 
   if (isLoading) {
-    return (
-      <View style={styles.list}>
-        <ActivityIndicator
-          size="large"
-          color={Colors.primary}
-        ></ActivityIndicator>
-      </View>
-    );
+    return <LoadingIndicator />;
   }
 
   if (!isLoading && products.length === 0) {

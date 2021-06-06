@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -8,10 +8,12 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import Product from "../models/Product";
 import * as productActions from "../store/actions/productsAction";
 import Input from "../components/Input";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const FORM_UPDATE = "UPDATE";
 
@@ -39,6 +41,9 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [expcetion, setException] = useState();
+
   const productId = props.navigation.getParam("productId");
   let inputProduct;
 
@@ -63,17 +68,32 @@ const EditProductScreen = (props) => {
     formIsValid: productId ? true : false,
   });
 
-  const submitHandler = useCallback(() => {
+  useEffect(() => {
+    if (expcetion) {
+      Alert.alert("An error occured!", expcetion);
+    }
+  }, [expcetion]);
+
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       return;
     }
 
-    if (productId) {
-      dispatch(productActions.editProduct(formState.inputProduct));
-    } else {
-      dispatch(productActions.createProduct(formState.inputProduct));
+    setException(null);
+    setIsLoading(true);
+
+    try {
+      if (productId) {
+        await dispatch(productActions.editProduct(formState.inputProduct));
+      } else {
+        await dispatch(productActions.createProduct(formState.inputProduct));
+      }
+      props.navigation.goBack();
+    } catch (err) {
+      setException("Error in creating/editing. " + err);
+      throw err;
     }
-    props.navigation.goBack();
+    setIsLoading(false);
   }, [dispatch, formState]);
 
   useEffect(() => {
@@ -91,6 +111,10 @@ const EditProductScreen = (props) => {
     },
     [dispatchFormsState]
   );
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
