@@ -16,20 +16,21 @@ import LoadingIndicator from "./LoadingIndicator";
 
 const ProductList = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [expcetion, setExpcetion] = useState();
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
   const loadProducts = useCallback(async () => {
     setExpcetion(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(productActions.fetchProducts());
     } catch (err) {
       console.log(err);
       setExpcetion(err);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setExpcetion]);
 
   useEffect(() => {
@@ -46,7 +47,10 @@ const ProductList = (props) => {
   }, [loadProducts]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
@@ -120,6 +124,8 @@ const ProductList = (props) => {
   return (
     <View style={{ ...styles.list, ...props.style }}>
       <FlatList
+        onRefresh={loadProducts}
+        refreshing={isRefreshing}
         data={products}
         renderItem={renderProductItem}
         style={{ width: "100%" }}
