@@ -1,22 +1,12 @@
 import React from "react";
 import Colors from "../constants/Colors";
-import { useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import { StyleSheet } from "react-native";
 import ProductList from "../components/ProductList";
 
 const ShopScreen = (props) => {
-  const products = useSelector((state) => state.products.availableProducts);
-
-  return (
-    <ProductList
-      productList={products}
-      navigation={props.navigation}
-      onViewDetail={() => {}}
-      onAddToCart={() => {}}
-    />
-  );
+  return <ProductList navigation={props.navigation} />;
 };
 
 ShopScreen.navigationOptions = (props) => {

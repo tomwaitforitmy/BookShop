@@ -7,28 +7,36 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
   return async (dispatch) => {
-    const response = await fetch(
-      "https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json"
-    );
-
-    const responseData = await response.json();
-
-    const loadedProducts = [];
-
-    for (const key in responseData) {
-      loadedProducts.push(
-        new Product(
-          key,
-          "u1",
-          responseData[key].title,
-          responseData[key].imageUrl,
-          responseData[key].price,
-          responseData[key].description
-        )
+    try {
+      const response = await fetch(
+        "https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json"
       );
-    }
 
-    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      if (!response.ok) {
+        throw new Error("Something went wrong! \n #" + response.status);
+      }
+
+      const responseData = await response.json();
+      const loadedProducts = [];
+
+      for (const key in responseData) {
+        loadedProducts.push(
+          new Product(
+            key,
+            "u1",
+            responseData[key].title,
+            responseData[key].imageUrl,
+            responseData[key].price,
+            responseData[key].description
+          )
+        );
+      }
+
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+    } catch (error) {
+      // console.log(error);
+      throw error;
+    }
   };
 };
 
