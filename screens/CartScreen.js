@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Colors from "../constants/Colors";
 import { StyleSheet, View, Button, FlatList } from "react-native";
 import DefaultText from "../components/DefaultText";
@@ -7,8 +7,11 @@ import CartItem from "../components/CartItem";
 import * as cartActions from "../store/actions/cartAction";
 import * as ordersAction from "../store/actions/ordersAction";
 import Card from "../components/Card";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const CartScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => {
     const itemsInArrayFrom = [];
@@ -28,6 +31,16 @@ const CartScreen = (props) => {
 
   const dispatch = useDispatch();
 
+  const addOrderHandler = async () => {
+    setIsLoading(true);
+    await dispatch(ordersAction.addOrder(cartItems, cartTotalAmount));
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -36,9 +49,7 @@ const CartScreen = (props) => {
         </DefaultText>
         <Button
           title="Order now"
-          onPress={() => {
-            dispatch(ordersAction.addOrder(cartItems, cartTotalAmount));
-          }}
+          onPress={addOrderHandler}
           disabled={cartItems.length === 0}
         />
       </Card>

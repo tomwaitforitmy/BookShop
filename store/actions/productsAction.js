@@ -77,6 +77,10 @@ export const createProduct = (product) => {
       }
     );
 
+    if (!response.ok) {
+      throw new Error("Something went wrong creating! \n #" + response.status);
+    }
+
     const responseData = await response.json();
 
     product = { ...product, id: responseData.name };
