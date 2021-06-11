@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer, useCallback } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,12 +8,74 @@ import {
   Button,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch } from "react-redux";
 
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
+import * as authActions from "../store/actions/authAction";
+
+const FORM_UPDATE = "UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid,
+    };
+  }
+  return state;
+};
 
 const AuthScreen = (props) => {
+  const dispatch = useDispatch();
+
+  const [formState, dispatchFormsState] = useReducer(formReducer, {
+    inputValues: {
+      email: "",
+      password: "",
+    },
+    inputValidities: {
+      email: false,
+      password: false,
+    },
+    formIsValid: false,
+  });
+
+  const signupHandler = () => {
+    dispatch(
+      authActions.signup(
+        formState.inputValues.email,
+        formState.inputValues.password
+      )
+    );
+  };
+
+  const inputChangeHandler = useCallback(
+    (inputId, value, isValid) => {
+      dispatchFormsState({
+        type: FORM_UPDATE,
+        value: value,
+        isValid: isValid,
+        input: inputId,
+      });
+    },
+    [dispatchFormsState]
+  );
+
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -32,9 +94,9 @@ const AuthScreen = (props) => {
               required
               email
               autoCapitalize="none"
-              errorMessage="Please enter a valid E-Mail address."
+              errorLabel="Please enter a valid E-Mail address."
               initialValue=""
-              onInputChange={() => {}}
+              onInputChange={inputChangeHandler}
             ></Input>
             <Input
               id="password"
@@ -43,15 +105,15 @@ const AuthScreen = (props) => {
               minLength={5}
               required
               autoCapitalize="none"
-              errorMessage="Please enter a valid password."
+              errorLabel="Please enter a valid password."
               initialValue=""
-              onInputChange={() => {}}
+              onInputChange={inputChangeHandler}
             ></Input>
             <View style={styles.buttonContainer}>
               <Button
                 title="Login"
                 color={Colors.primary}
-                onPress={() => {}}
+                onPress={signupHandler}
               ></Button>
             </View>
             <View style={styles.buttonContainer}>
