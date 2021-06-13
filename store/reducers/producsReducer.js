@@ -7,8 +7,8 @@ import {
 } from "../actions/productsAction";
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((prod) => prod.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -17,7 +17,7 @@ const productsReducer = (state = initialState, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products.filter((prod) => prod.ownerId === "u1"),
+        userProducts: action.userProducts,
       };
     }
     case DELETE_PRODUCT: {

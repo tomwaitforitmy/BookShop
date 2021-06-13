@@ -52,7 +52,8 @@ const EditProductScreen = (props) => {
       state.products.availableProducts.find((p) => p.id === productId)
     );
   } else {
-    inputProduct = new Product("", "u1", "", "", 0, "");
+    const userId = useSelector((state) => state.auth.userId);
+    inputProduct = new Product("", userId, "", "", 0, "");
   }
 
   const dispatch = useDispatch();

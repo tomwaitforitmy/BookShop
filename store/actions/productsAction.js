@@ -1,3 +1,4 @@
+import { HandleResponseError } from "../../common_functions/HandleResponseError";
 import Product from "../../models/Product";
 
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
@@ -6,17 +7,15 @@ export const EDIT_PRODUCT = "EDIT_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+
     try {
       const response = await fetch(
         "https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json"
       );
 
-      if (!response.ok) {
-        throw new Error(
-          "Something went wrong fetching! \n #" + response.status
-        );
-      }
+      await HandleResponseError(response);
 
       const responseData = await response.json();
       const loadedProducts = [];
@@ -25,7 +24,7 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            "u1",
+            responseData[key].ownerId,
             responseData[key].title,
             responseData[key].imageUrl,
             responseData[key].price,
@@ -34,26 +33,28 @@ export const fetchProducts = () => {
         );
       }
 
-      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+      dispatch({
+        type: SET_PRODUCTS,
+        products: loadedProducts,
+        userProducts: loadedProducts.filter((p) => p.ownerId === userId),
+      });
     } catch (error) {
-      // console.log(error);
       throw error;
     }
   };
 };
 
 export const deleteProduct = (id) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`,
+      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json?auth=${token}`,
       {
         method: "DELETE",
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Something went wrong deleting! \n #" + response.status);
-    }
+    await HandleResponseError(response);
 
     dispatch({ type: DELETE_PRODUCT, productId: id });
   };
@@ -65,9 +66,14 @@ const replacer = (key, value) => {
 };
 
 export const createProduct = (product) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
+
+    product = { ...product, ownerId: userId };
+
     const response = await fetch(
-      "https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json",
+      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=${token}`,
       {
         method: "POST",
         header: {
@@ -77,9 +83,7 @@ export const createProduct = (product) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Something went wrong creating! \n #" + response.status);
-    }
+    await HandleResponseError(response);
 
     const responseData = await response.json();
 
@@ -90,9 +94,10 @@ export const createProduct = (product) => {
 };
 
 export const editProduct = (product) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${product.id}.json`,
+      `https://testshop-39aae-default-rtdb.europe-west1.firebasedatabase.app/products/${product.id}.json?auth=${token}`,
       {
         method: "PATCH",
         header: {
@@ -102,9 +107,7 @@ export const editProduct = (product) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Something went wrong editing! \n #" + response.status);
-    }
+    await HandleResponseError(response);
 
     dispatch({ type: EDIT_PRODUCT, product: product });
   };
