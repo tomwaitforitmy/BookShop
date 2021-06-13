@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Text,
   Button,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -14,6 +15,7 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/authAction";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const FORM_UPDATE = "UPDATE";
 
@@ -41,6 +43,9 @@ const formReducer = (state, action) => {
 };
 
 const AuthScreen = (props) => {
+  const [isSignup, setIsSignup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const dispatch = useDispatch();
 
   const [formState, dispatchFormsState] = useReducer(formReducer, {
@@ -55,13 +60,33 @@ const AuthScreen = (props) => {
     formIsValid: false,
   });
 
-  const signupHandler = () => {
-    dispatch(
-      authActions.signup(
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured!", error);
+    }
+  }, [error]);
+
+  const authHandler = async () => {
+    let action;
+    if (isSignup) {
+      action = authActions.signup(
         formState.inputValues.email,
         formState.inputValues.password
-      )
-    );
+      );
+    } else {
+      action = authActions.login(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    }
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
   };
 
   const inputChangeHandler = useCallback(
@@ -102,7 +127,7 @@ const AuthScreen = (props) => {
               id="password"
               label="Password"
               secureTextEntry
-              minLength={5}
+              minLength={6}
               required
               autoCapitalize="none"
               errorLabel="Please enter a valid password."
@@ -110,17 +135,23 @@ const AuthScreen = (props) => {
               onInputChange={inputChangeHandler}
             ></Input>
             <View style={styles.buttonContainer}>
-              <Button
-                title="Login"
-                color={Colors.primary}
-                onPress={signupHandler}
-              ></Button>
+              {isLoading ? (
+                <LoadingIndicator></LoadingIndicator>
+              ) : (
+                <Button
+                  title={isSignup ? "Sign Up" : "Login"}
+                  color={Colors.primary}
+                  onPress={authHandler}
+                ></Button>
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title="Register"
+                title={`Switch to ${isSignup ? "Login" : "Sign Up"}`}
                 color={Colors.second}
-                onPress={() => {}}
+                onPress={() => {
+                  setIsSignup((prevState) => !prevState);
+                }}
               ></Button>
             </View>
           </ScrollView>
