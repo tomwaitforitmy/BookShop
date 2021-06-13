@@ -1,3 +1,5 @@
+import { HandleResponseError } from "../../common_functions/HandleResponseError";
+
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 
@@ -26,10 +28,7 @@ export const signup = (email, password) => {
       }
     );
 
-    if (!response.ok) {
-      const responseData = await response.json();
-      throw new Error(responseData.error.message);
-    }
+    await HandleResponseError(response);
 
     const responseData = await response.json();
     console.log(responseData);
@@ -52,10 +51,7 @@ export const login = (email, password) => {
       }
     );
 
-    if (!response.ok) {
-      const responseData = await response.json();
-      throw new Error(responseData.error.message);
-    }
+    await HandleResponseError(response);
 
     const responseData = await response.json();
     console.log(responseData);
