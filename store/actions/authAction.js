@@ -1,9 +1,13 @@
 import { HandleResponseError } from "../../common_functions/HandleResponseError";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const SIGNUP = "SIGNUP";
-export const LOGIN = "LOGIN";
+export const AUTHENTICATE = "AUTHENTICATE";
 
 const FIREBASE_API_KEY = "AIzaSyBK-NbCaWKt412ZW0uBZP5N87RQHck8KwA";
+
+export const authenticate = (token, userId) => {
+  return { type: AUTHENTICATE, token: token, userId: userId };
+};
 
 export const signup = (email, password) => {
   return async (dispach) => {
@@ -23,11 +27,16 @@ export const signup = (email, password) => {
     await HandleResponseError(response);
 
     const responseData = await response.json();
-    dispach({
-      type: SIGNUP,
-      token: responseData.idToken,
-      userId: responseData.localId,
-    });
+    dispach(authenticate(responseData.idToken, responseData.localId));
+
+    const expericationDate = new Date(
+      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+    );
+    saveDataToStorage(
+      responseData.idToken,
+      responseData.localId,
+      expericationDate
+    );
   };
 };
 
@@ -50,10 +59,26 @@ export const login = (email, password) => {
 
     const responseData = await response.json();
     console.log(responseData);
-    dispach({
-      type: LOGIN,
-      token: responseData.idToken,
-      userId: responseData.localId,
-    });
+    dispach(authenticate(responseData.idToken, responseData.localId));
+
+    const expericationDate = new Date(
+      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+    );
+    saveDataToStorage(
+      responseData.idToken,
+      responseData.localId,
+      expericationDate
+    );
   };
+};
+
+const saveDataToStorage = (token, userId, expericationDate) => {
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      token: token,
+      userId: userId,
+      expericationDate: expericationDate.toISOString(),
+    })
+  );
 };
