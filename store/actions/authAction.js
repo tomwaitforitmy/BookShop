@@ -2,11 +2,16 @@ import { HandleResponseError } from "../../common_functions/HandleResponseError"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
 
 const FIREBASE_API_KEY = "AIzaSyBK-NbCaWKt412ZW0uBZP5N87RQHck8KwA";
 
 export const authenticate = (token, userId) => {
   return { type: AUTHENTICATE, token: token, userId: userId };
+};
+
+export const logout = () => {
+  return { type: LOGOUT };
 };
 
 export const signup = (email, password) => {
