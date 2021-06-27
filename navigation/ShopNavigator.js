@@ -110,7 +110,6 @@ const DrawerNavigator = createDrawerNavigator(
               title="Logout"
               onPress={() => {
                 dispatch(authActions.logout());
-                props.navigation.navigate("Auth");
               }}
               color={Colors.primary}
             ></Button>

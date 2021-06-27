@@ -4,14 +4,39 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 
+let timer;
+
 const FIREBASE_API_KEY = "AIzaSyBK-NbCaWKt412ZW0uBZP5N87RQHck8KwA";
 
-export const authenticate = (token, userId) => {
-  return { type: AUTHENTICATE, token: token, userId: userId };
+export const authenticate = (token, userId, experiationTime) => {
+  return (dispach) => {
+    dispach(setLogoutTimer(experiationTime));
+    dispach({ type: AUTHENTICATE, token: token, userId: userId });
+  };
 };
 
 export const logout = () => {
+  clearLogoutTimer();
+  AsyncStorage.removeItem("userData");
   return { type: LOGOUT };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+
+const setLogoutTimer = (experiationTime) => {
+  return (dispach) => {
+    timer = setTimeout(() => {
+      dispach(logout());
+    }, experiationTime);
+  };
+};
+
+const convertExpirationTimeToMs = (experiationTimeInMinutes) => {
+  return parseInt(experiationTimeInMinutes) * 1000;
 };
 
 export const signup = (email, password) => {
@@ -32,10 +57,20 @@ export const signup = (email, password) => {
     await HandleResponseError(response);
 
     const responseData = await response.json();
-    dispach(authenticate(responseData.idToken, responseData.localId));
+    const experiationTimeInMs = convertExpirationTimeToMs(
+      responseData.expiresIn
+    );
+
+    dispach(
+      authenticate(
+        responseData.idToken,
+        responseData.localId,
+        experiationTimeInMs
+      )
+    );
 
     const expericationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      new Date().getTime() + experiationTimeInMs
     );
     saveDataToStorage(
       responseData.idToken,
@@ -64,10 +99,21 @@ export const login = (email, password) => {
 
     const responseData = await response.json();
     console.log(responseData);
-    dispach(authenticate(responseData.idToken, responseData.localId));
+
+    const experiationTimeInMs = convertExpirationTimeToMs(
+      responseData.expiresIn
+    );
+
+    dispach(
+      authenticate(
+        responseData.idToken,
+        responseData.localId,
+        experiationTimeInMs
+      )
+    );
 
     const expericationDate = new Date(
-      new Date().getTime() + parseInt(responseData.expiresIn) * 1000
+      new Date().getTime() + experiationTimeInMs
     );
     saveDataToStorage(
       responseData.idToken,

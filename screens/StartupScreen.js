@@ -24,8 +24,10 @@ const StartupScreen = (props) => {
         return;
       }
 
+      const experiationTime = expericationDate.getTime() - new Date().getTime();
+
       props.navigation.navigate("ShopNavigator");
-      dispatch(authActions.authenticate(token, userId));
+      dispatch(authActions.authenticate(token, userId, experiationTime));
     };
     tryLogin();
   }, [dispatch]);
